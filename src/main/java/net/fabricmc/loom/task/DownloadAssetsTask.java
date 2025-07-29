@@ -96,7 +96,7 @@ public abstract class DownloadAssetsTask extends AbstractLoomTask {
 			getLegacyResourcesDirectory().set(new File(getProject().getProjectDir(), runDir + "/resources"));
 		}
 
-		getResourcesBaseUrl().set(MirrorUtil.getResourcesBase(getProject()));
+		getResourcesBaseUrl().set(versionInfo.assetIndex().url() != null ? versionInfo.assetIndex().url() : MirrorUtil.getResourcesBase(getProject()));
 		getResourcesBaseUrl().finalizeValue();
 
 		getAssetsIndexJson().set(LoomGradlePlugin.GSON.toJson(getExtension().getMinecraftProvider().getVersionInfo().assetIndex()));

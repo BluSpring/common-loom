@@ -29,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public record AssetIndex(Map<String, Entry> objects, boolean virtual, @SerializedName("map_to_resources") boolean mapToResources) {
@@ -40,12 +41,19 @@ public record AssetIndex(Map<String, Entry> objects, boolean virtual, @Serialize
 		return objects.entrySet().stream().map(Object::new).toList();
 	}
 
-	public record Entry(String hash, long size) {
+	public record Entry(String hash, long size, @Nullable String url) {
+		Entry(String hash, long size) {
+			this(hash, size, null);
+		}
 	}
 
-	public record Object(String path, String hash, long size) {
+	public record Object(String path, String hash, long size, @Nullable String url) {
+		Object(String path, String hash, long size) {
+			this(path, hash, size, null);
+		}
+
 		private Object(Map.Entry<String, Entry> entry) {
-			this(entry.getKey(), entry.getValue().hash(), entry.getValue().size());
+			this(entry.getKey(), entry.getValue().hash(), entry.getValue().size(), entry.getValue().url());
 		}
 
 		public String name() {
